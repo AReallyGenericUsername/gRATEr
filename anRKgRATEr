@@ -1,0 +1,74 @@
+// ==UserScript==
+// @name         Cromwell is number 1!
+// @namespace    http://tampermonkey.net/
+// @version      0.1
+// @description  try to take over the world!
+// @require  http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js
+// @require  https://gist.github.com/raw/2625891/waitForKeyElements.js
+// @grant    GM_addStyle
+// @author       Cromwell2025/Ageneric -> RKeins 
+// @match        http://wcsvotes.com/*
+// @icon         https://cdn.discordapp.com/attachments/742487570998493205/960767255300440074/RKeins.ico
+// @grant        none
+// @run-at       document-idle
+// ==/UserScript==
+console.log('init')
+
+
+console.log('Mutator ONLINE');
+(new MutationObserver(check)).observe(document, {childList: true, subtree: true});
+
+function check(changes, observer) {
+    console.log('IF');
+    console.log(name1);
+    console.log(name2);
+    console.log(document.querySelector("#name1"));
+    console.log(document.querySelector("#name2"));
+    var name1 = document.querySelector("#name1").textContent;
+    var name2 = document.querySelector("#name2").textContent;
+    if(document.querySelector("#name2") && name2 != "name2 place holder" ) {
+        observer.disconnect();
+        if (name1 == "Firstname last"){
+            vote(1);
+        }
+        else if (name2 == "Firstname last"){
+
+            vote(2);
+        }
+        else{
+            vote(1);
+            console.log('namenotfound');}
+
+    }else{
+        console.log('IF returned false!');}
+}
+
+function httpGet(theUrl) {
+  let xmlHttpReq = new XMLHttpRequest();
+  xmlHttpReq.open("GET", theUrl, false);
+  xmlHttpReq.send(null);
+  return xmlHttpReq.responseText;
+}
+
+
+function vote(choice) {
+
+    if (choice == 1) {
+        console.log('voted 1')
+        var url1 = 'http://198.166.111.139:2269/vote/'+"[WCS-GHERE]"+'/'+name1+'/'+name2
+        httpGet(url1);
+        location.reload();
+
+
+        
+        
+    } else {
+        console.log('voted 2')
+        var url2 = 'http://198.166.111.139:2269/vote/'+"[WCSG-HERE]"+'/'+name2+'/'+name1
+        httpGet(url2);
+        location.reload();
+
+        
+    }
+}
+
